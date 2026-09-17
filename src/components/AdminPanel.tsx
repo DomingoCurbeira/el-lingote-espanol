@@ -230,7 +230,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   }
 
   // --------------------------------------------------------------------------
-  // DASHBOARD DE ADMINISTRACIÓN (MÓVIL PANTALLA COMPLETA & ALTA VISIBILIDAD)
+  // DASHBOARD DE ADMINISTRACIÓN (SLIM & ULTRA COMPACT HEADER)
   // --------------------------------------------------------------------------
   return (
     <div
@@ -241,36 +241,29 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     >
       <div className="flex h-full w-full sm:h-auto sm:max-h-[92vh] sm:w-[95%] sm:max-w-5xl flex-col rounded-none sm:rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in duration-200">
         
-        {/* HEADER PRINCIPAL COMPACTO EN MÓVIL */}
-        <div className="border-b border-black/10 bg-ivory px-4 py-3 sm:px-6 sm:py-5">
+        {/* HEADER SLIM ULTRA COMPACTO */}
+        <div className="border-b border-black/10 bg-ivory px-3.5 py-2.5 sm:px-6 sm:py-3.5">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <span className="text-xl">⚙️</span>
-              <div>
-                <h2 id="admin-title" className="display text-lg sm:text-2xl font-bold leading-none">
-                  Gestión de Pedidos
-                </h2>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[10px] text-black/60 font-semibold truncate max-w-[140px] sm:max-w-none">
-                    {currentUser.email}
-                  </span>
-                  {isSupabaseConfigured ? (
-                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-800">
-                      ✓ Supabase
-                    </span>
-                  ) : (
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold text-amber-800">
-                      ● Demo
-                    </span>
-                  )}
-                </div>
-              </div>
+              <span className="text-lg sm:text-xl">⚙️</span>
+              <h2 id="admin-title" className="display text-base sm:text-xl font-bold leading-none">
+                Panel de Pedidos
+              </h2>
+              {isSupabaseConfigured ? (
+                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                  ● DB Activo
+                </span>
+              ) : (
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                  ● Local
+                </span>
+              )}
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={loadOrdersData}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-black/15 bg-white text-sm hover:bg-black/5"
+                className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-black/15 bg-white text-xs hover:bg-black/5"
                 title="Recargar pedidos"
               >
                 🔄
@@ -278,14 +271,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
               <button
                 onClick={handleLogout}
-                className="hidden sm:inline-flex rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-redlingote hover:bg-red-100 transition"
+                className="hidden sm:inline-flex rounded-lg border border-red-200 bg-red-50 px-3 py-1 text-xs font-bold text-redlingote hover:bg-red-100 transition"
               >
-                🚪 Cerrar Sesión
+                🚪 Salir
               </button>
 
               <button
                 onClick={onClose}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/15 text-xl font-bold hover:bg-black/5 shrink-0"
+                className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-black/15 text-lg font-bold hover:bg-black/5 shrink-0"
                 aria-label="Cerrar panel admin"
               >
                 ×
@@ -293,21 +286,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Botones secundarios móvil */}
-          <div className="mt-2.5 flex items-center justify-between sm:hidden text-xs">
-            <button
-              onClick={() => setShowStatsMobile(!showStatsMobile)}
-              className="text-redlingote font-bold flex items-center gap-1 py-1"
-            >
-              📊 {showStatsMobile ? 'Ocultar Resumen' : 'Ver Estadísticas & Ventas ▼'}
-            </button>
+          {/* Fila secundaria super limpia */}
+          <div className="mt-1.5 flex items-center justify-between text-xs sm:text-xs">
+            <div className="text-[11px] text-black/55 truncate max-w-[200px] sm:max-w-none">
+              {currentUser.email}
+            </div>
             
-            <button
-              onClick={handleLogout}
-              className="text-black/50 hover:text-redlingote font-bold py-1"
-            >
-              🚪 Salir
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowStatsMobile(!showStatsMobile)}
+                className="text-redlingote font-bold text-[11px] sm:text-xs hover:underline"
+              >
+                📊 {showStatsMobile ? 'Ocultar Resumen' : 'Estadísticas ▼'}
+              </button>
+              
+              <button
+                onClick={handleLogout}
+                className="sm:hidden text-black/50 hover:text-redlingote font-bold text-[11px]"
+              >
+                🚪 Salir
+              </button>
+            </div>
           </div>
         </div>
 
@@ -322,7 +321,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           </div>
         )}
 
-        {/* BARRA DE ESTADÍSTICAS (Plegable en móvil para dar 90% de pantalla a la lista) */}
+        {/* BARRA DE ESTADÍSTICAS (Plegable en móvil) */}
         <div className={`${showStatsMobile ? 'block' : 'hidden sm:block'} border-b border-black/10 bg-white p-3 sm:p-5 transition duration-200`}>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
             <div className="rounded-xl border border-black/10 bg-ivory p-2.5 sm:p-3">
@@ -330,7 +329,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               <div className="mt-0.5 text-lg sm:text-2xl font-black">{orders.length}</div>
             </div>
             <div className="rounded-xl border border-black/10 bg-ivory p-2.5 sm:p-3">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Ventas Acumuladas</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Ventas</div>
               <div className="mt-0.5 text-base sm:text-2xl font-black text-redlingote">{formatCRC(totalRevenue)}</div>
             </div>
             <div className="rounded-xl border border-black/10 bg-ivory p-2.5 sm:p-3">
@@ -348,9 +347,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           </div>
         </div>
 
-        {/* FILTROS DE BÚSQUEDA Y ESTADO (COMPACTO) */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/10 bg-ivory/60 px-3.5 py-2.5 sm:px-6 sm:py-3">
-          <div className="flex items-center gap-2 flex-1 min-w-[160px]">
+        {/* FILTROS DE BÚSQUEDA Y ESTADO */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/10 bg-ivory/60 px-3 py-2 sm:px-6 sm:py-3">
+          <div className="flex items-center gap-2 flex-1 min-w-[140px]">
             <span className="text-xs font-bold text-black/60 shrink-0">Filtrar:</span>
             <select
               value={statusFilter}
@@ -358,7 +357,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               className="w-full rounded-lg border border-black/15 bg-white px-2.5 py-1.5 text-xs font-semibold outline-none min-h-[36px]"
             >
               <option value="all">Todos ({orders.length})</option>
-              <option value="pending">Pendientes de Pago</option>
+              <option value="pending">Pendiente de Pago</option>
               <option value="deposit_paid">Adelanto 50% Recibido</option>
               <option value="fully_paid">Pago 100% Completo</option>
               <option value="in_production">En Cocina</option>
@@ -386,7 +385,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           </div>
         </div>
 
-        {/* LISTA PRINCIPAL DE PEDIDOS (AMPLIA Y CON SCROLL NATURAL) */}
+        {/* LISTA PRINCIPAL DE PEDIDOS */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-4">
           {loadingOrders ? (
             <div className="py-20 text-center text-sm font-semibold text-black/45">
@@ -398,7 +397,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
           ) : (
             <>
-              {/* Indicador de cantidad de resultados */}
               <div className="text-[11px] font-bold uppercase tracking-wider text-black/40 px-1">
                 Mostrando {filteredOrders.length} {filteredOrders.length === 1 ? 'pedido' : 'pedidos'}:
               </div>
@@ -478,7 +476,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                       </div>
                     )}
 
-                    {/* BARRA DE ACCIONES PRINCIPALES (GRANDE Y TÁCTIL) */}
+                    {/* BARRA DE ACCIONES PRINCIPALES */}
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 border-t border-black/10 pt-3">
                       <div className="text-xs text-amber-900 font-bold bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200/70 text-center sm:text-left">
                         👉 Adelanto 50%: <strong>{formatCRC(Number(order.total) * 0.5)}</strong>
@@ -525,7 +523,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
         </div>
 
         {/* Footer Admin */}
-        <div className="border-t border-black/10 bg-ivory px-4 py-2.5 text-center text-[11px] text-black/50 shrink-0">
+        <div className="border-t border-black/10 bg-ivory px-4 py-2 text-center text-[11px] text-black/50 shrink-0">
           El Lingote Español · Panel Protegido con Supabase Auth
         </div>
       </div>
