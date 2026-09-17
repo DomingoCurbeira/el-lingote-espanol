@@ -49,18 +49,18 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ onClose })
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 sm:p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="tracker-title"
     >
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div className="flex max-h-[92vh] w-full max-w-2xl flex-col rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-black/10 bg-ivory px-6 py-5 sm:px-8">
+        <div className="flex items-center justify-between border-b border-black/10 bg-ivory px-4 py-4 sm:px-8 sm:py-5">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">🔍</span>
+            <span className="text-2xl shrink-0">🔍</span>
             <div>
-              <h2 id="tracker-title" className="display text-2xl font-bold">
+              <h2 id="tracker-title" className="display text-xl sm:text-2xl font-bold">
                 Rastrear mi Pedido
               </h2>
               <p className="text-xs text-black/55">
@@ -71,28 +71,29 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ onClose })
 
           <button
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-xl font-bold hover:bg-black/5"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-xl font-bold hover:bg-black/5 shrink-0"
           >
             ×
           </button>
         </div>
 
         {/* Formulario de Búsqueda */}
-        <div className="border-b border-black/10 bg-white p-6 sm:p-8">
-          <form onSubmit={handleSearch} className="flex gap-3">
+        <div className="border-b border-black/10 bg-white p-4 sm:p-8">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
             <input
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder="Ingresa tu Nº de Pedido (#code) o Teléfono"
-              className="flex-1 rounded-xl border border-black/15 bg-ivory px-4 py-3 text-sm outline-none focus:border-redlingote"
+              className="w-full sm:flex-1 rounded-xl border border-black/15 bg-ivory px-4 py-3 text-sm outline-none focus:border-redlingote min-h-[46px]"
             />
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-redlingote px-6 py-3 text-sm font-black text-white transition hover:bg-red-700 disabled:opacity-50 shrink-0"
+              className="w-full sm:w-auto rounded-xl bg-redlingote px-6 py-3 text-sm font-black text-white transition hover:bg-red-700 disabled:opacity-50 shrink-0 min-h-[46px] flex items-center justify-center gap-2"
             >
-              {loading ? 'Buscando...' : 'Buscar Pedido'}
+              <span>🔍</span>
+              <span>{loading ? 'Buscando...' : 'Buscar Pedido'}</span>
             </button>
           </form>
         </div>
