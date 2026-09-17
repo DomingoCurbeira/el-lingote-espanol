@@ -230,7 +230,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   }
 
   // --------------------------------------------------------------------------
-  // DASHBOARD DE ADMINISTRACIÓN (SLIM & ULTRA COMPACT HEADER)
+  // DASHBOARD DE ADMINISTRACIÓN (HEADER ICON-ONLY MINIMALISTA & SLIM)
   // --------------------------------------------------------------------------
   return (
     <div
@@ -241,44 +241,59 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     >
       <div className="flex h-full w-full sm:h-auto sm:max-h-[92vh] sm:w-[95%] sm:max-w-5xl flex-col rounded-none sm:rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in duration-200">
         
-        {/* HEADER SLIM ULTRA COMPACTO */}
-        <div className="border-b border-black/10 bg-ivory px-3.5 py-2.5 sm:px-6 sm:py-3.5">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <span className="text-lg sm:text-xl">⚙️</span>
-              <h2 id="admin-title" className="display text-base sm:text-xl font-bold leading-none">
+        {/* HEADER SLIM MÓVIL ULTRA COMPACTO */}
+        <div className="border-b border-black/10 bg-ivory px-3 py-2 sm:px-6 sm:py-3">
+          <div className="flex items-center justify-between gap-1.5">
+            {/* Título & Badge de estado */}
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-base sm:text-lg shrink-0">⚙️</span>
+              <h2 id="admin-title" className="display text-sm sm:text-lg font-bold leading-none truncate">
                 Panel de Pedidos
               </h2>
               {isSupabaseConfigured ? (
-                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-800 shrink-0">
                   ● DB Activo
                 </span>
               ) : (
-                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold text-amber-800 shrink-0">
                   ● Local
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* BOTONES DE ACCIÓN ICON-ONLY EN MÓVIL */}
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              <button
+                onClick={() => setShowSqlHelp(!showSqlHelp)}
+                className="flex items-center gap-1 rounded-lg border border-black/15 bg-white px-2 py-1 text-xs font-bold hover:bg-black/5"
+                title="Ver SQL Schema"
+              >
+                <span>📋</span>
+                <span className="hidden sm:inline">SQL</span>
+              </button>
+
               <button
                 onClick={loadOrdersData}
-                className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-black/15 bg-white text-xs hover:bg-black/5"
-                title="Recargar pedidos"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/15 bg-white text-xs hover:bg-black/5"
+                title="Recargar lista de pedidos"
               >
                 🔄
               </button>
 
+              {/* BOTÓN ROJO INCONFUNDIBLE PARA CERRAR SESIÓN */}
               <button
                 onClick={handleLogout}
-                className="hidden sm:inline-flex rounded-lg border border-red-200 bg-red-50 px-3 py-1 text-xs font-bold text-redlingote hover:bg-red-100 transition"
+                className="flex h-8 items-center gap-1 rounded-lg border border-red-300 bg-red-100 px-2 py-1 text-xs font-bold text-red-800 hover:bg-red-200 transition"
+                title="Cerrar Sesión de Administrador"
               >
-                🚪 Salir
+                <span>🚪</span>
+                <span className="hidden sm:inline">Salir</span>
               </button>
 
+              {/* Botón Cerrar Modal */}
               <button
                 onClick={onClose}
-                className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-black/15 text-lg font-bold hover:bg-black/5 shrink-0"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/15 text-lg font-bold hover:bg-black/5 shrink-0"
                 aria-label="Cerrar panel admin"
               >
                 ×
@@ -286,35 +301,26 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Fila secundaria super limpia */}
-          <div className="mt-1.5 flex items-center justify-between text-xs sm:text-xs">
-            <div className="text-[11px] text-black/55 truncate max-w-[200px] sm:max-w-none">
+          {/* Sublínea con correo y toggle de estadísticas */}
+          <div className="mt-1 flex items-center justify-between text-[10px] sm:text-xs">
+            <span className="text-black/50 truncate max-w-[170px] sm:max-w-none">
               {currentUser.email}
-            </div>
+            </span>
             
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setShowStatsMobile(!showStatsMobile)}
-                className="text-redlingote font-bold text-[11px] sm:text-xs hover:underline"
-              >
-                📊 {showStatsMobile ? 'Ocultar Resumen' : 'Estadísticas ▼'}
-              </button>
-              
-              <button
-                onClick={handleLogout}
-                className="sm:hidden text-black/50 hover:text-redlingote font-bold text-[11px]"
-              >
-                🚪 Salir
-              </button>
-            </div>
+            <button
+              onClick={() => setShowStatsMobile(!showStatsMobile)}
+              className="text-redlingote font-bold hover:underline shrink-0"
+            >
+              📊 {showStatsMobile ? 'Ocultar Resumen' : 'Estadísticas ▼'}
+            </button>
           </div>
         </div>
 
         {/* Guía SQL si se despliega */}
         {showSqlHelp && (
-          <div className="border-b border-black/10 bg-amber-50/70 p-4 text-xs text-amber-900 leading-5">
+          <div className="border-b border-black/10 bg-amber-50/70 p-3 sm:p-4 text-xs text-amber-900 leading-5">
             <strong>Instrucciones para desplegar las nuevas políticas en Supabase:</strong>
-            <ol className="mt-2 list-decimal list-inside space-y-1">
+            <ol className="mt-1 list-decimal list-inside space-y-1 text-[11px]">
               <li>Copia y ejecuta el contenido actualizado del archivo <code className="bg-amber-200/60 px-1 py-0.5 rounded">supabase/schema.sql</code> en el SQL Editor de Supabase.</li>
               <li>Esto habilitará las políticas para que los clientes puedan consultar su estado con el botón <strong>Rastrear Pedido</strong>.</li>
             </ol>
