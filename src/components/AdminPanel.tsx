@@ -107,6 +107,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     const success = await updateOrderStatus(orderId, newStatus)
     if (success) {
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
+    } else {
+      alert('⚠️ No se pudo cambiar el estado en Supabase. Verifica que el archivo supabase/schema.sql esté ejecutado en el SQL Editor de tu proyecto Supabase.')
     }
   }
 
@@ -119,8 +121,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     const success = await deleteOrder(order.id)
     if (success) {
       setOrders(prev => prev.filter(o => o.id !== order.id))
+      setConfirmDeleteOrder(null)
+    } else {
+      alert('⚠️ Supabase no ejecutó el borrado. Esto ocurre cuando las políticas RLS (Row Level Security) de la base de datos bloquean la acción. Por favor actualiza la tabla con el código SQL de la guía del botón "📋 SQL".')
     }
-    setConfirmDeleteOrder(null)
   }
 
   const filteredOrders = orders.filter(order => {

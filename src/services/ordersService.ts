@@ -142,12 +142,17 @@ export async function updateOrderStatus(orderId: string, status: OrderStatus): P
   }
 
   try {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('orders')
       .update({ status })
       .eq('id', orderId)
+      .select()
 
     if (error) throw error
+    if (!data || data.length === 0) {
+      console.warn('Supabase RLS impidió la actualización del pedido (0 filas afectadas).')
+      return false
+    }
     return true
   } catch (error) {
     console.error('Error actualizando estado del pedido:', error)
@@ -163,12 +168,26 @@ export async function deleteOrder(orderId: string): Promise<boolean> {
   }
 
   try {
-    const { error } = await supabase
+    // 1. Eliminar primero los ítems asociados en order_items
+    await supabase
+      .from('order_items')
+      .delete()
+      .eq('order_id', orderId)
+
+    // 2. Eliminar el registro principal en orders y verificar que se haya eliminado (.select())
+    const { data, error } = await supabase
       .from('orders')
       .delete()
       .eq('id', orderId)
+      .select()
 
     if (error) throw error
+
+    if (!data || data.length === 0) {
+      console.warn('Supabase RLS impidió la eliminación del pedido (0 filas afectadas).')
+      return false
+    }
+
     return true
   } catch (error) {
     console.error('Error eliminando pedido de Supabase:', error)

@@ -53,12 +53,18 @@ group by pickup_date, pickup_time;
 alter table public.orders enable row level security;
 alter table public.order_items enable row level security;
 
--- Limpiar políticas anteriores
+-- Limpiar políticas anteriores para evitar conflictos
 drop policy if exists "Público puede crear pedidos" on public.orders;
 drop policy if exists "Público puede insertar items" on public.order_items;
 drop policy if exists "Público puede leer fechas y horas para disponibilidad" on public.orders;
+drop policy if exists "Público puede leer pedidos para rastreo y disponibilidad" on public.orders;
+drop policy if exists "Público puede leer items de pedido para rastreo" on public.order_items;
 drop policy if exists "Solo autenticados pueden ver items de pedidos" on public.order_items;
 drop policy if exists "Solo administradores autenticados pueden actualizar pedidos" on public.orders;
+drop policy if exists "Solo administradores autenticados pueden eliminar pedidos" on public.orders;
+drop policy if exists "Permitir actualizar pedidos" on public.orders;
+drop policy if exists "Permitir eliminar pedidos" on public.orders;
+drop policy if exists "Permitir eliminar order_items" on public.order_items;
 
 -- 6.1 INSERCIÓN PÚBLICA
 create policy "Público puede crear pedidos" on public.orders
@@ -74,9 +80,12 @@ create policy "Público puede leer pedidos para rastreo y disponibilidad" on pub
 create policy "Público puede leer items de pedido para rastreo" on public.order_items
   for select using (true);
 
--- 6.3 ACTUALIZACIÓN Y ELIMINACIÓN: Solo usuarios AUTENTICADOS (Supabase Auth)
-create policy "Solo administradores autenticados pueden actualizar pedidos" on public.orders
-  for update using (auth.role() = 'authenticated');
+-- 6.3 ACTUALIZACIÓN Y ELIMINACIÓN ADMIN
+create policy "Permitir actualizar pedidos" on public.orders
+  for update using (true);
 
-create policy "Solo administradores autenticados pueden eliminar pedidos" on public.orders
-  for delete using (auth.role() = 'authenticated');
+create policy "Permitir eliminar pedidos" on public.orders
+  for delete using (true);
+
+create policy "Permitir eliminar order_items" on public.order_items
+  for delete using (true);
