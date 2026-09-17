@@ -230,7 +230,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   }
 
   // --------------------------------------------------------------------------
-  // DASHBOARD DE ADMINISTRACIÓN (HEADER ICON-ONLY MINIMALISTA & SLIM)
+  // DASHBOARD DE ADMINISTRACIÓN (CONTENCIÓN PERFECTA DE BOTONES)
   // --------------------------------------------------------------------------
   return (
     <div
@@ -241,27 +241,25 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     >
       <div className="flex h-full w-full sm:h-auto sm:max-h-[92vh] sm:w-[95%] sm:max-w-5xl flex-col rounded-none sm:rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in duration-200">
         
-        {/* HEADER SLIM MÓVIL ULTRA COMPACTO */}
-        <div className="border-b border-black/10 bg-ivory px-3 py-2 sm:px-6 sm:py-3">
-          <div className="flex items-center justify-between gap-1.5">
-            {/* Título & Badge de estado */}
-            <div className="flex items-center gap-1.5 min-w-0">
+        {/* HEADER SLIM ULTRA COMPACTO */}
+        <div className="border-b border-black/10 bg-ivory px-3.5 py-2.5 sm:px-6 sm:py-3.5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
               <span className="text-base sm:text-lg shrink-0">⚙️</span>
-              <h2 id="admin-title" className="display text-sm sm:text-lg font-bold leading-none truncate">
+              <h2 id="admin-title" className="display text-base sm:text-xl font-bold leading-none truncate">
                 Panel de Pedidos
               </h2>
               {isSupabaseConfigured ? (
-                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-800 shrink-0">
+                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 shrink-0">
                   ● DB Activo
                 </span>
               ) : (
-                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold text-amber-800 shrink-0">
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800 shrink-0">
                   ● Local
                 </span>
               )}
             </div>
 
-            {/* BOTONES DE ACCIÓN ICON-ONLY EN MÓVIL */}
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               <button
                 onClick={() => setShowSqlHelp(!showSqlHelp)}
@@ -280,7 +278,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 🔄
               </button>
 
-              {/* BOTÓN ROJO INCONFUNDIBLE PARA CERRAR SESIÓN */}
               <button
                 onClick={handleLogout}
                 className="flex h-8 items-center gap-1 rounded-lg border border-red-300 bg-red-100 px-2 py-1 text-xs font-bold text-red-800 hover:bg-red-200 transition"
@@ -290,7 +287,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 <span className="hidden sm:inline">Salir</span>
               </button>
 
-              {/* Botón Cerrar Modal */}
               <button
                 onClick={onClose}
                 className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/15 text-lg font-bold hover:bg-black/5 shrink-0"
@@ -301,7 +297,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Sublínea con correo y toggle de estadísticas */}
           <div className="mt-1 flex items-center justify-between text-[10px] sm:text-xs">
             <span className="text-black/50 truncate max-w-[170px] sm:max-w-none">
               {currentUser.email}
@@ -309,7 +304,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             
             <button
               onClick={() => setShowStatsMobile(!showStatsMobile)}
-              className="text-redlingote font-bold hover:underline shrink-0"
+              className="text-redlingote font-bold shrink-0 hover:underline"
             >
               📊 {showStatsMobile ? 'Ocultar Resumen' : 'Estadísticas ▼'}
             </button>
@@ -412,37 +407,46 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 return (
                   <div
                     key={order.id}
-                    className="flex flex-col gap-3 rounded-2xl border border-black/15 bg-white p-4 shadow-sm transition hover:border-black/30"
+                    className="flex flex-col gap-3 rounded-2xl border border-black/15 bg-white p-4 shadow-sm transition hover:border-black/30 overflow-hidden"
                   >
                     {/* Encabezado Pedido */}
                     <div className="flex items-start justify-between gap-2 border-b border-black/10 pb-3">
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="display font-bold text-lg text-ink">
+                          <span className="display font-bold text-base sm:text-lg text-ink truncate">
                             {order.customer_name}
                           </span>
                           {order.has_paella && (
-                            <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-[10px] font-bold text-orange-800">
+                            <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-800 shrink-0">
                               🥘 Paella
                             </span>
                           )}
                         </div>
 
                         <div className="mt-1 flex items-center gap-2">
-                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${badge.bg} ${badge.text}`}>
+                          <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${badge.bg} ${badge.text}`}>
                             {badge.label}
                           </span>
-                          <span className="text-[11px] font-mono text-black/40">
+                          <span className="text-[10px] font-mono text-black/40">
                             #{order.id.slice(0, 8)}
                           </span>
                         </div>
                       </div>
 
-                      <div className="text-right shrink-0">
-                        <div className="text-[11px] text-black/45">Total a cobrar</div>
-                        <div className="text-lg font-black text-redlingote">
-                          {formatCRC(Number(order.total))}
+                      <div className="flex items-center gap-2 shrink-0">
+                        <div className="text-right">
+                          <div className="text-[11px] text-black/45">Total</div>
+                          <div className="text-base sm:text-lg font-black text-redlingote">
+                            {formatCRC(Number(order.total))}
+                          </div>
                         </div>
+                        <button
+                          onClick={() => setConfirmDeleteOrder(order)}
+                          className="flex h-9 w-9 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 text-sm text-rose-700 hover:bg-rose-100 hover:scale-105 active:scale-95 transition shrink-0"
+                          title="Eliminar / Cancelar Pedido"
+                        >
+                          🗑️
+                        </button>
                       </div>
                     </div>
 
@@ -454,7 +458,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                           className="inline-flex items-center gap-1 text-blue-700 font-bold hover:underline"
                         >
                           <span>📞 {order.customer_phone}</span>
-                          <span className="text-[10px] font-normal text-black/50">(Tocar para llamar)</span>
+                          <span className="text-[10px] font-normal text-black/50">(Llamar)</span>
                         </a>
 
                         <div className="font-bold text-black/70">
@@ -483,7 +487,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     )}
 
                     {/* BARRA DE ACCIONES PRINCIPALES */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 border-t border-black/10 pt-3">
+                    <div className="flex flex-col gap-2 border-t border-black/10 pt-3">
                       <div className="text-xs text-amber-900 font-bold bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200/70 text-center sm:text-left">
                         👉 Adelanto 50%: <strong>{formatCRC(Number(order.total) * 0.5)}</strong>
                       </div>
@@ -491,34 +495,28 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => setSelectedTicketOrder(order)}
-                          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 rounded-xl border border-black/20 bg-ivory px-3.5 py-2.5 text-xs font-bold text-ink hover:bg-black hover:text-white transition min-h-[44px]"
-                          title="Imprimir comanda"
+                          className="flex items-center justify-center gap-1 rounded-xl border border-black/20 bg-ivory px-3 py-2 text-xs font-bold text-ink hover:bg-black hover:text-white transition min-h-[40px] shrink-0"
+                          title="Imprimir comanda de cocina"
                         >
                           <span>🖨️</span>
-                          <span>Comanda</span>
+                          <span className="inline">Comanda</span>
                         </button>
 
-                        <select
-                          value={order.status}
-                          onChange={e => handleStatusChange(order.id, e.target.value as OrderStatus)}
-                          className="flex-1 sm:flex-none rounded-xl border border-black/20 bg-white px-3 py-2.5 text-xs font-bold outline-none focus:border-redlingote min-h-[44px]"
-                        >
-                          <option value="pending">Pendiente de Pago</option>
-                          <option value="deposit_paid">Adelanto 50% Recibido</option>
-                          <option value="fully_paid">Pago 100% Completo</option>
-                          <option value="in_production">En Cocina</option>
-                          <option value="ready">Listo para Recoger</option>
-                          <option value="delivered">Entregado</option>
-                          <option value="cancelled">Cancelado</option>
-                        </select>
-
-                        <button
-                          onClick={() => setConfirmDeleteOrder(order)}
-                          className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2.5 text-xs font-bold text-rose-700 hover:bg-rose-100 transition min-h-[44px] shrink-0"
-                          title="Opciones de cancelación / eliminación"
-                        >
-                          🗑️
-                        </button>
+                        <div className="flex-1 min-w-0">
+                          <select
+                            value={order.status}
+                            onChange={e => handleStatusChange(order.id, e.target.value as OrderStatus)}
+                            className="w-full rounded-xl border border-black/20 bg-white px-2.5 py-2 text-xs font-bold outline-none focus:border-redlingote min-h-[40px] truncate"
+                          >
+                            <option value="pending">Pendiente de Pago</option>
+                            <option value="deposit_paid">Adelanto 50% Recibido</option>
+                            <option value="fully_paid">Pago 100% Completo</option>
+                            <option value="in_production">En Cocina</option>
+                            <option value="ready">Listo para Recoger</option>
+                            <option value="delivered">Entregado</option>
+                            <option value="cancelled">Cancelado</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>
