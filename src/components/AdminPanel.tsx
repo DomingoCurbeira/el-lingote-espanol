@@ -40,9 +40,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [showSqlHelp, setShowSqlHelp] = useState(false)
   const [showStatsMobile, setShowStatsMobile] = useState(false)
 
-  // Modales
+  // Modales y Notificaciones
   const [selectedTicketOrder, setSelectedTicketOrder] = useState<Order | null>(null)
   const [confirmDeleteOrder, setConfirmDeleteOrder] = useState<Order | null>(null)
+  const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'info' | 'error'; text: string } | null>(null)
+
+  const showToast = (text: string, type: 'success' | 'info' | 'error' = 'success') => {
+    setToastMessage({ text, type })
+    setTimeout(() => {
+      setToastMessage(null)
+    }, 3500)
+  }
 
   // Verificar sesión existente
   useEffect(() => {
@@ -107,14 +115,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     const success = await updateOrderStatus(orderId, newStatus)
     if (success) {
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
+      const statusLabel = STATUS_LABELS[newStatus]?.label || 'actualizado'
+      showToast(`✓ Estado del pedido cambiado a: "${statusLabel}"`, 'success')
     } else {
       alert('⚠️ No se pudo cambiar el estado en Supabase. Verifica que el archivo supabase/schema.sql esté ejecutado en el SQL Editor de tu proyecto Supabase.')
     }
   }
 
   const handleSoftCancel = async (order: Order) => {
-    await handleStatusChange(order.id, 'cancelled')
-    setConfirmDeleteOrder(null)
+    const success = await updateOrderStatus(order.id, 'cancelled')
+    if (success) {
+      setOrders(prev => prev.map(o => o.id === order.id ? { ...o, status: 'cancelled' } : o))
+      setConfirmDeleteOrder(null)
+      showToast(`🔴 Pedido #${order.id.slice(0, 8)} de ${order.customer_name} marcado como Cancelado.`, 'info')
+    } else {
+      alert('⚠️ No se pudo cancelar el pedido en Supabase. Revisa las políticas RLS.')
+    }
   }
 
   const handleHardDelete = async (order: Order) => {
@@ -122,6 +138,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     if (success) {
       setOrders(prev => prev.filter(o => o.id !== order.id))
       setConfirmDeleteOrder(null)
+      showToast(`🗑️ Pedido #${order.id.slice(0, 8)} de ${order.customer_name} eliminado con éxito.`, 'success')
     } else {
       alert('⚠️ Supabase no ejecutó el borrado. Esto ocurre cuando las políticas RLS (Row Level Security) de la base de datos bloquean la acción. Por favor actualiza la tabla con el código SQL de la guía del botón "📋 SQL".')
     }
@@ -605,6 +622,24 @@ create policy "Permitir eliminar order_items" on public.order_items for delete u
               Volver atrás
             </button>
           </div>
+        </div>
+      )}
+
+      {/* NOTIFICACIÓN TOAST FLOTANTE */}
+      {toastMessage && (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform rounded-2xl bg-ink text-white px-5 py-3.5 shadow-2xl flex items-center gap-3 border border-white/10 animate-in fade-in slide-in-from-bottom-5 duration-200 min-w-[280px] max-w-sm sm:max-w-md">
+          <span className="text-base font-bold shrink-0">
+            {toastMessage.type === 'success' ? '✅' : toastMessage.type === 'info' ? 'ℹ️' : '⚠️'}
+          </span>
+          <span className="text-xs font-bold leading-tight flex-1">
+            {toastMessage.text}
+          </span>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="text-white/60 hover:text-white font-bold text-base shrink-0 ml-1"
+          >
+            ×
+          </button>
         </div>
       )}
     </div>
