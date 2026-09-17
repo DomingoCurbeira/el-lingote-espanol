@@ -131,7 +131,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     .reduce((sum, o) => sum + Number(o.total), 0)
 
   // --------------------------------------------------------------------------
-  // PANTALLA DE LOGIN
+  // PANTALLA DE LOGIN (MOBILE FIRST)
   // --------------------------------------------------------------------------
   if (checkingAuth) {
     return (
@@ -146,18 +146,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   if (!currentUser) {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 sm:p-4 backdrop-blur-sm"
         role="dialog"
         aria-modal="true"
         aria-labelledby="login-title"
       >
-        <div className="w-full max-w-md rounded-[2rem] bg-paper p-7 text-ink shadow-2xl sm:p-9 animate-in fade-in zoom-in duration-200">
-          <div className="flex items-start justify-between gap-5">
+        <div className="w-full max-w-md rounded-[2rem] bg-paper p-6 sm:p-9 text-ink shadow-2xl animate-in fade-in zoom-in duration-200">
+          <div className="flex items-start justify-between gap-4">
             <div>
               <span className="rounded-full bg-redlingote/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-redlingote">
                 🔒 Área Restringida
               </span>
-              <h2 id="login-title" className="display mt-3 text-3xl font-bold">
+              <h2 id="login-title" className="display mt-2 text-2xl sm:text-3xl font-bold">
                 Acceso Administrador
               </h2>
               <p className="mt-1 text-xs leading-5 text-black/55">
@@ -166,7 +166,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
             <button
               onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-xl leading-none hover:bg-black/5"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-xl font-bold hover:bg-black/5 shrink-0"
             >
               ×
             </button>
@@ -178,7 +178,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="mt-6 space-y-4">
+          <form onSubmit={handleLogin} className="mt-5 space-y-4">
             <div>
               <label className="block text-xs font-bold text-black/60 mb-1">Correo Administrador</label>
               <input
@@ -187,7 +187,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="admin@ellingoteespanol.com"
-                className="w-full rounded-xl border border-black/15 bg-ivory px-4 py-3 text-sm outline-none focus:border-redlingote"
+                className="w-full min-h-[44px] rounded-xl border border-black/15 bg-ivory px-4 py-2.5 text-sm outline-none focus:border-redlingote"
               />
             </div>
 
@@ -199,7 +199,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full rounded-xl border border-black/15 bg-ivory px-4 py-3 text-sm outline-none focus:border-redlingote"
+                className="w-full min-h-[44px] rounded-xl border border-black/15 bg-ivory px-4 py-2.5 text-sm outline-none focus:border-redlingote"
               />
             </div>
 
@@ -212,13 +212,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-xl bg-redlingote px-5 py-3.5 font-black text-white transition hover:bg-red-700 disabled:opacity-50"
+              className="w-full min-h-[48px] rounded-xl bg-redlingote px-5 py-3 font-black text-white transition hover:bg-red-700 disabled:opacity-50 text-sm"
             >
               {isSubmitting ? 'Verificando...' : 'Iniciar Sesión Admin →'}
             </button>
           </form>
 
-          <div className="mt-6 text-center text-xs text-black/40">
+          <div className="mt-5 text-center text-xs text-black/40">
             El Lingote Español · Supabase Auth Protected
           </div>
         </div>
@@ -227,115 +227,121 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   }
 
   // --------------------------------------------------------------------------
-  // DASHBOARD DE ADMINISTRACIÓN
+  // DASHBOARD DE ADMINISTRACIÓN (MOBILE-FIRST ADAPTIVE)
   // --------------------------------------------------------------------------
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm print:p-0 print:bg-white"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-0 sm:p-4 backdrop-blur-sm print:p-0 print:bg-white"
       role="dialog"
       aria-modal="true"
       aria-labelledby="admin-title"
     >
-      <div className="flex max-h-[90vh] w-full max-w-5xl flex-col rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in duration-200">
-        {/* Header Dashboard */}
-        <div className="flex flex-wrap items-center justify-between border-b border-black/10 bg-ivory px-6 py-5 sm:px-8">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">⚙️</span>
-              <h2 id="admin-title" className="display text-2xl font-bold">
-                Panel de Pedidos & Disponibilidad
-              </h2>
-              {isSupabaseConfigured ? (
-                <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
-                  ● Supabase Auth Activo
-                </span>
-              ) : (
-                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">
-                  ● Demo Local
-                </span>
-              )}
+      <div className="flex h-full w-full sm:h-auto sm:max-h-[92vh] sm:w-[95%] sm:max-w-5xl flex-col rounded-none sm:rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in duration-200">
+        {/* Header Dashboard (Mobile-First) */}
+        <div className="border-b border-black/10 bg-ivory p-4 sm:p-6">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xl">⚙️</span>
+                <h2 id="admin-title" className="display text-xl sm:text-2xl font-bold leading-tight">
+                  Panel de Pedidos
+                </h2>
+                {isSupabaseConfigured ? (
+                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                    ● Supabase Auth
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold text-amber-800">
+                    ● Demo Local
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-[11px] sm:text-xs text-black/55 truncate max-w-[260px] sm:max-w-none">
+                Sesión: <strong className="text-black/80">{currentUser.email}</strong>
+              </p>
             </div>
-            <p className="mt-1 text-xs text-black/55">
-              Sesión iniciada como: <strong className="text-black/80">{currentUser.email}</strong>
-            </p>
+
+            <button
+              onClick={onClose}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/15 text-xl font-bold hover:bg-black/5 shrink-0"
+              aria-label="Cerrar panel admin"
+            >
+              ×
+            </button>
           </div>
 
-          <div className="mt-3 flex items-center gap-3 sm:mt-0">
-            <button
-              onClick={() => setShowSqlHelp(!showSqlHelp)}
-              className="rounded-full border border-black/15 bg-white px-3.5 py-1.5 text-xs font-bold hover:bg-black/5"
-            >
-              {showSqlHelp ? 'Ocultar Guía' : '📋 Ver SQL Schema'}
-            </button>
-
+          {/* Botones de acción Header */}
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             <button
               onClick={loadOrdersData}
-              className="rounded-full border border-black/15 bg-white px-3.5 py-1.5 text-xs font-bold hover:bg-black/5"
+              className="flex-1 sm:flex-none rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-bold hover:bg-black/5 text-center min-h-[36px]"
               title="Recargar pedidos"
             >
               🔄 Recargar
             </button>
 
             <button
-              onClick={handleLogout}
-              className="rounded-full border border-red-200 bg-red-50 px-3.5 py-1.5 text-xs font-bold text-redlingote hover:bg-red-100 transition"
-              title="Cerrar sesión de administrador"
+              onClick={() => setShowSqlHelp(!showSqlHelp)}
+              className="flex-1 sm:flex-none rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-bold hover:bg-black/5 text-center min-h-[36px]"
             >
-              🚪 Cerrar Sesión
+              {showSqlHelp ? 'Ocultar Guía' : '📋 Ver SQL'}
             </button>
 
             <button
-              onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-xl font-bold hover:bg-black/5"
+              onClick={handleLogout}
+              className="w-full sm:w-auto rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-redlingote hover:bg-red-100 transition text-center min-h-[36px]"
+              title="Cerrar sesión"
             >
-              ×
+              🚪 Cerrar Sesión
             </button>
           </div>
         </div>
 
         {/* Guía SQL */}
         {showSqlHelp && (
-          <div className="border-b border-black/10 bg-amber-50/70 p-5 text-xs text-amber-900 leading-5">
-            <strong>Instrucciones para desplegar las nuevas políticas en Supabase:</strong>
+          <div className="border-b border-black/10 bg-amber-50/70 p-4 text-xs text-amber-900 leading-5">
+            <strong>Cómo configurar usuarios administradores en Supabase Auth:</strong>
             <ol className="mt-2 list-decimal list-inside space-y-1">
-              <li>Copia y ejecuta el contenido actualizado del archivo <code className="bg-amber-200/60 px-1 py-0.5 rounded">supabase/schema.sql</code> en el SQL Editor de Supabase.</li>
-              <li>Esto habilitará las políticas para que los clientes puedan consultar su estado con el botón <strong>Rastrear Pedido</strong>.</li>
+              <li>En tu proyecto de Supabase, ve a <strong>Authentication &gt; Users</strong>.</li>
+              <li>Haz clic en <strong>"Add user" &gt; "Create user"</strong>.</li>
+              <li>Escribe el correo de administración y su contraseña.</li>
+              <li>Ejecuta el archivo <code className="bg-amber-200/60 px-1 py-0.5 rounded">supabase/schema.sql</code> en el SQL Editor.</li>
             </ol>
           </div>
         )}
 
-        {/* Bar de Estadísticas */}
-        <div className="grid grid-cols-2 gap-4 border-b border-black/10 bg-white p-5 sm:grid-cols-4">
-          <div className="rounded-xl border border-black/10 bg-ivory p-3.5">
+        {/* Bar de Estadísticas (2x2 en móvil) */}
+        <div className="grid grid-cols-2 gap-2.5 border-b border-black/10 bg-white p-3.5 sm:gap-4 sm:p-5 sm:grid-cols-4">
+          <div className="rounded-xl border border-black/10 bg-ivory p-3">
             <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Total Pedidos</div>
-            <div className="mt-1 text-2xl font-black">{orders.length}</div>
+            <div className="mt-0.5 text-xl sm:text-2xl font-black">{orders.length}</div>
           </div>
-          <div className="rounded-xl border border-black/10 bg-ivory p-3.5">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Ventas Acumuladas</div>
-            <div className="mt-1 text-2xl font-black text-redlingote">{formatCRC(totalRevenue)}</div>
+          <div className="rounded-xl border border-black/10 bg-ivory p-3">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Ventas</div>
+            <div className="mt-0.5 text-lg sm:text-2xl font-black text-redlingote">{formatCRC(totalRevenue)}</div>
           </div>
-          <div className="rounded-xl border border-black/10 bg-ivory p-3.5">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Adelantos / Confirmados</div>
-            <div className="mt-1 text-2xl font-black text-teal-600">
+          <div className="rounded-xl border border-black/10 bg-ivory p-3">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Adelanto 50%</div>
+            <div className="mt-0.5 text-xl sm:text-2xl font-black text-teal-600">
               {orders.filter(o => ['deposit_paid', 'fully_paid'].includes(o.status)).length}
             </div>
           </div>
-          <div className="rounded-xl border border-black/10 bg-ivory p-3.5">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">En Producción / Listos</div>
-            <div className="mt-1 text-2xl font-black text-emerald-600">
+          <div className="rounded-xl border border-black/10 bg-ivory p-3">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">En Cocina</div>
+            <div className="mt-0.5 text-xl sm:text-2xl font-black text-emerald-600">
               {orders.filter(o => ['in_production', 'ready'].includes(o.status)).length}
             </div>
           </div>
         </div>
 
-        {/* Filtros */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/10 bg-ivory/50 px-6 py-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-black/60">Estado:</span>
+        {/* Filtros (Mobile Responsive Stack) */}
+        <div className="flex flex-col gap-2.5 border-b border-black/10 bg-ivory/50 p-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <span className="text-xs font-bold text-black/60 shrink-0">Estado:</span>
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-semibold outline-none"
+              className="w-full sm:w-auto rounded-lg border border-black/15 bg-white px-3 py-2 text-xs font-semibold outline-none min-h-[40px]"
             >
               <option value="all">Todos los estados</option>
               <option value="pending">Pendiente de Pago</option>
@@ -348,18 +354,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-black/60">Fecha Recogida:</span>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <span className="text-xs font-bold text-black/60 shrink-0">Fecha:</span>
             <input
               type="date"
               value={dateFilter}
               onChange={e => setDateFilter(e.target.value)}
-              className="rounded-lg border border-black/15 bg-white px-3 py-1 text-xs font-semibold outline-none"
+              className="flex-1 sm:w-auto rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-semibold outline-none min-h-[40px]"
             />
             {dateFilter && (
               <button
                 onClick={() => setDateFilter('')}
-                className="text-xs font-bold text-redlingote hover:underline"
+                className="text-xs font-bold text-redlingote shrink-0 underline"
               >
                 Limpiar
               </button>
@@ -368,7 +374,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
         </div>
 
         {/* Lista de Pedidos */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-3.5 sm:p-6 space-y-3.5">
           {loadingOrders ? (
             <div className="py-16 text-center text-sm font-semibold text-black/45">Cargando pedidos...</div>
           ) : filteredOrders.length === 0 ? (
@@ -376,100 +382,118 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               No se encontraron pedidos con los filtros seleccionados.
             </div>
           ) : (
-            <div className="space-y-4">
-              {filteredOrders.map(order => {
-                const badge = STATUS_LABELS[order.status] || STATUS_LABELS.pending
-                return (
-                  <div
-                    key={order.id}
-                    className="flex flex-col gap-4 rounded-2xl border border-black/10 bg-white p-5 shadow-sm transition hover:border-black/20 md:flex-row md:items-center md:justify-between"
-                  >
-                    <div className="flex-1">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="display font-bold text-lg">{order.customer_name}</span>
-                        <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${badge.bg} ${badge.text}`}>
-                          {badge.label}
+            filteredOrders.map(order => {
+              const badge = STATUS_LABELS[order.status] || STATUS_LABELS.pending
+              return (
+                <div
+                  key={order.id}
+                  className="flex flex-col gap-3 rounded-2xl border border-black/10 bg-white p-4 shadow-sm transition hover:border-black/20"
+                >
+                  {/* Encabezado Pedido Mobile */}
+                  <div className="flex items-start justify-between gap-2 border-b border-black/10 pb-3">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="display font-bold text-base sm:text-lg leading-tight">
+                          {order.customer_name}
                         </span>
                         {order.has_paella && (
-                          <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-orange-800">
+                          <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-800">
                             🥘 Paella
                           </span>
                         )}
-                        <span className="text-[11px] font-mono text-black/40">
+                      </div>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${badge.bg} ${badge.text}`}>
+                          {badge.label}
+                        </span>
+                        <span className="text-[10px] font-mono text-black/40">
                           #{order.id.slice(0, 8)}
                         </span>
                       </div>
-
-                      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-black/60">
-                        <span>📱 <strong>{order.customer_phone}</strong></span>
-                        <span>👥 <strong>{order.people_count} personas</strong></span>
-                        <span>📅 <strong>{order.pickup_date}</strong> a las <strong>{order.pickup_time}</strong></span>
-                      </div>
-
-                      {order.items && order.items.length > 0 && (
-                        <div className="mt-3 rounded-xl bg-ivory p-3 text-xs leading-5">
-                          <strong className="text-black/70">Detalle del pedido:</strong>
-                          <ul className="mt-1 list-disc list-inside space-y-0.5 text-black/80">
-                            {order.items.map((item, idx) => (
-                              <li key={idx}>
-                                {item.quantity} × {item.product_name} ({formatCRC(Number(item.total_price))})
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
                     </div>
 
-                    <div className="flex shrink-0 flex-col items-end gap-3 border-t border-black/10 pt-3 md:border-t-0 md:pt-0">
-                      <div className="text-right">
-                        <div className="text-xs text-black/45">Total: {formatCRC(Number(order.total))}</div>
-                        <div className="text-xs font-bold text-amber-900">
-                          Adelanto (50%): {formatCRC(Number(order.total) * 0.5)}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap items-center gap-2">
-                        <button
-                          onClick={() => setSelectedTicketOrder(order)}
-                          className="flex items-center gap-1 rounded-lg border border-black/20 bg-ivory px-3 py-1 text-xs font-bold text-ink hover:bg-black hover:text-white transition"
-                          title="Ver comanda de cocina para imprimir"
-                        >
-                          <span>🖨️</span>
-                          <span>Comanda</span>
-                        </button>
-
-                        <select
-                          value={order.status}
-                          onChange={e => handleStatusChange(order.id, e.target.value as OrderStatus)}
-                          className="rounded-lg border border-black/20 bg-white px-2.5 py-1 text-xs font-bold outline-none focus:border-redlingote"
-                        >
-                          <option value="pending">Pendiente de Pago</option>
-                          <option value="deposit_paid">Adelanto 50% Recibido</option>
-                          <option value="fully_paid">Pago 100% Completo</option>
-                          <option value="in_production">En Cocina</option>
-                          <option value="ready">Listo para Recoger</option>
-                          <option value="delivered">Entregado</option>
-                          <option value="cancelled">Cancelado</option>
-                        </select>
-
-                        <button
-                          onClick={() => setConfirmDeleteOrder(order)}
-                          className="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 hover:bg-rose-100 transition"
-                          title="Opciones de cancelación / eliminación"
-                        >
-                          🗑️
-                        </button>
+                    <div className="text-right shrink-0">
+                      <div className="text-[11px] text-black/45">Total</div>
+                      <div className="text-base sm:text-lg font-black text-redlingote">
+                        {formatCRC(Number(order.total))}
                       </div>
                     </div>
                   </div>
-                )
-              })}
-            </div>
+
+                  {/* Datos de contacto y fecha (Con clic directo para llamar) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-black/70">
+                    <a
+                      href={`tel:${order.customer_phone}`}
+                      className="inline-flex items-center gap-1.5 text-blue-700 font-bold hover:underline"
+                    >
+                      <span>📞 {order.customer_phone}</span>
+                      <span className="text-[10px] font-normal text-black/40">(Llamar)</span>
+                    </a>
+                    <div>👥 <strong>{order.people_count} personas</strong></div>
+                    <div>📅 <strong>{order.pickup_date}</strong> a las <strong>{order.pickup_time}</strong></div>
+                  </div>
+
+                  {/* Ítems del pedido */}
+                  {order.items && order.items.length > 0 && (
+                    <div className="rounded-xl bg-ivory p-3 text-xs leading-5">
+                      <strong className="text-black/70">Ítems reservados:</strong>
+                      <ul className="mt-1 list-disc list-inside space-y-0.5 text-black/80">
+                        {order.items.map((item, idx) => (
+                          <li key={idx}>
+                            {item.quantity} × {item.product_name} ({formatCRC(Number(item.total_price))})
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Barra de Acciones Móvil (Touch-Friendly) */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-t border-black/10 pt-3">
+                    <div className="text-[11px] text-amber-900 font-bold">
+                      Adelanto (50%): {formatCRC(Number(order.total) * 0.5)}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                      <button
+                        onClick={() => setSelectedTicketOrder(order)}
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 rounded-xl border border-black/20 bg-ivory px-3 py-2 text-xs font-bold text-ink hover:bg-black hover:text-white transition min-h-[40px]"
+                        title="Imprimir comanda"
+                      >
+                        <span>🖨️</span>
+                        <span>Comanda</span>
+                      </button>
+
+                      <select
+                        value={order.status}
+                        onChange={e => handleStatusChange(order.id, e.target.value as OrderStatus)}
+                        className="flex-1 sm:flex-none rounded-xl border border-black/20 bg-white px-2.5 py-2 text-xs font-bold outline-none focus:border-redlingote min-h-[40px]"
+                      >
+                        <option value="pending">Pendiente de Pago</option>
+                        <option value="deposit_paid">Adelanto 50% Recibido</option>
+                        <option value="fully_paid">Pago 100% Completo</option>
+                        <option value="in_production">En Cocina</option>
+                        <option value="ready">Listo para Recoger</option>
+                        <option value="delivered">Entregado</option>
+                        <option value="cancelled">Cancelado</option>
+                      </select>
+
+                      <button
+                        onClick={() => setConfirmDeleteOrder(order)}
+                        className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100 transition min-h-[40px] shrink-0"
+                        title="Opciones de cancelación / eliminación"
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )
+            })
           )}
         </div>
 
         {/* Footer Admin */}
-        <div className="border-t border-black/10 bg-ivory px-6 py-4 text-center text-xs text-black/50">
+        <div className="border-t border-black/10 bg-ivory px-4 py-3 text-center text-xs text-black/50">
           El Lingote Español · Panel Protegido con Supabase Auth
         </div>
       </div>
@@ -482,20 +506,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
         />
       )}
 
-      {/* MODAL DE CONFIRMACIÓN DE CANCELACIÓN / ELIMINACIÓN */}
+      {/* MODAL DE CONFIRMACIÓN DE CANCELACIÓN / ELIMINACIÓN MOBILE FIRST */}
       {confirmDeleteOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-[2rem] bg-paper p-7 text-ink shadow-2xl animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3.5 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-[2rem] bg-paper p-6 text-ink shadow-2xl animate-in fade-in zoom-in duration-200">
             <span className="text-3xl">⚠️</span>
-            <h3 className="display mt-3 text-2xl font-bold">Gestión de Cancelación</h3>
+            <h3 className="display mt-2 text-2xl font-bold">Gestión de Cancelación</h3>
             <p className="mt-2 text-xs leading-5 text-black/60">
               ¿Qué acción deseas realizar con el pedido de <strong>{confirmDeleteOrder.customer_name}</strong> (#{confirmDeleteOrder.id.slice(0, 8)})?
             </p>
 
-            <div className="mt-6 space-y-3">
+            <div className="mt-5 space-y-3">
               <button
                 onClick={() => handleSoftCancel(confirmDeleteOrder)}
-                className="w-full rounded-xl border border-amber-300 bg-amber-50 p-4 text-left hover:bg-amber-100 transition"
+                className="w-full rounded-xl border border-amber-300 bg-amber-50 p-3.5 text-left hover:bg-amber-100 transition"
               >
                 <div className="font-bold text-amber-950 text-xs">🔴 Marcar como Cancelado (Recomendado)</div>
                 <div className="mt-0.5 text-[11px] text-amber-900/80">
@@ -505,7 +529,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
               <button
                 onClick={() => handleHardDelete(confirmDeleteOrder)}
-                className="w-full rounded-xl border border-rose-300 bg-rose-50 p-4 text-left hover:bg-rose-100 transition"
+                className="w-full rounded-xl border border-rose-300 bg-rose-50 p-3.5 text-left hover:bg-rose-100 transition"
               >
                 <div className="font-bold text-rose-950 text-xs">❌ Eliminar por Completo (Permanente)</div>
                 <div className="mt-0.5 text-[11px] text-rose-900/80">
@@ -516,7 +540,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
             <button
               onClick={() => setConfirmDeleteOrder(null)}
-              className="mt-5 w-full rounded-xl border border-black/15 py-3 text-xs font-bold hover:bg-black/5"
+              className="mt-4 w-full rounded-xl border border-black/15 py-3 text-xs font-bold hover:bg-black/5 min-h-[44px]"
             >
               Volver atrás
             </button>
