@@ -35,7 +35,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [loadingOrders, setLoadingOrders] = useState(false)
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [dateFilter, setDateFilter] = useState<string>('')
+  
+  // Acordeones / Desplegables en móvil
   const [showSqlHelp, setShowSqlHelp] = useState(false)
+  const [showStatsMobile, setShowStatsMobile] = useState(false)
 
   // Modales
   const [selectedTicketOrder, setSelectedTicketOrder] = useState<Order | null>(null)
@@ -131,7 +134,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     .reduce((sum, o) => sum + Number(o.total), 0)
 
   // --------------------------------------------------------------------------
-  // PANTALLA DE LOGIN (MOBILE FIRST)
+  // PANTALLA DE LOGIN
   // --------------------------------------------------------------------------
   if (checkingAuth) {
     return (
@@ -227,7 +230,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   }
 
   // --------------------------------------------------------------------------
-  // DASHBOARD DE ADMINISTRACIÓN (MOBILE-FIRST ADAPTIVE)
+  // DASHBOARD DE ADMINISTRACIÓN (MÓVIL PANTALLA COMPLETA & ALTA VISIBILIDAD)
   // --------------------------------------------------------------------------
   return (
     <div
@@ -237,114 +240,125 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       aria-labelledby="admin-title"
     >
       <div className="flex h-full w-full sm:h-auto sm:max-h-[92vh] sm:w-[95%] sm:max-w-5xl flex-col rounded-none sm:rounded-[2rem] bg-paper text-ink shadow-2xl overflow-hidden animate-in fade-in duration-200">
-        {/* Header Dashboard (Mobile-First) */}
-        <div className="border-b border-black/10 bg-ivory p-4 sm:p-6">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xl">⚙️</span>
-                <h2 id="admin-title" className="display text-xl sm:text-2xl font-bold leading-tight">
-                  Panel de Pedidos
+        
+        {/* HEADER PRINCIPAL COMPACTO EN MÓVIL */}
+        <div className="border-b border-black/10 bg-ivory px-4 py-3 sm:px-6 sm:py-5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">⚙️</span>
+              <div>
+                <h2 id="admin-title" className="display text-lg sm:text-2xl font-bold leading-none">
+                  Gestión de Pedidos
                 </h2>
-                {isSupabaseConfigured ? (
-                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800">
-                    ● Supabase Auth
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="text-[10px] text-black/60 font-semibold truncate max-w-[140px] sm:max-w-none">
+                    {currentUser.email}
                   </span>
-                ) : (
-                  <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold text-amber-800">
-                    ● Demo Local
-                  </span>
-                )}
+                  {isSupabaseConfigured ? (
+                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-800">
+                      ✓ Supabase
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold text-amber-800">
+                      ● Demo
+                    </span>
+                  )}
+                </div>
               </div>
-              <p className="mt-1 text-[11px] sm:text-xs text-black/55 truncate max-w-[260px] sm:max-w-none">
-                Sesión: <strong className="text-black/80">{currentUser.email}</strong>
-              </p>
             </div>
 
-            <button
-              onClick={onClose}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/15 text-xl font-bold hover:bg-black/5 shrink-0"
-              aria-label="Cerrar panel admin"
-            >
-              ×
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={loadOrdersData}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-black/15 bg-white text-sm hover:bg-black/5"
+                title="Recargar pedidos"
+              >
+                🔄
+              </button>
+
+              <button
+                onClick={handleLogout}
+                className="hidden sm:inline-flex rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-redlingote hover:bg-red-100 transition"
+              >
+                🚪 Cerrar Sesión
+              </button>
+
+              <button
+                onClick={onClose}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/15 text-xl font-bold hover:bg-black/5 shrink-0"
+                aria-label="Cerrar panel admin"
+              >
+                ×
+              </button>
+            </div>
           </div>
 
-          {/* Botones de acción Header */}
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          {/* Botones secundarios móvil */}
+          <div className="mt-2.5 flex items-center justify-between sm:hidden text-xs">
             <button
-              onClick={loadOrdersData}
-              className="flex-1 sm:flex-none rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-bold hover:bg-black/5 text-center min-h-[36px]"
-              title="Recargar pedidos"
+              onClick={() => setShowStatsMobile(!showStatsMobile)}
+              className="text-redlingote font-bold flex items-center gap-1 py-1"
             >
-              🔄 Recargar
+              📊 {showStatsMobile ? 'Ocultar Resumen' : 'Ver Estadísticas & Ventas ▼'}
             </button>
-
-            <button
-              onClick={() => setShowSqlHelp(!showSqlHelp)}
-              className="flex-1 sm:flex-none rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-bold hover:bg-black/5 text-center min-h-[36px]"
-            >
-              {showSqlHelp ? 'Ocultar Guía' : '📋 Ver SQL'}
-            </button>
-
+            
             <button
               onClick={handleLogout}
-              className="w-full sm:w-auto rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-redlingote hover:bg-red-100 transition text-center min-h-[36px]"
-              title="Cerrar sesión"
+              className="text-black/50 hover:text-redlingote font-bold py-1"
             >
-              🚪 Cerrar Sesión
+              🚪 Salir
             </button>
           </div>
         </div>
 
-        {/* Guía SQL */}
+        {/* Guía SQL si se despliega */}
         {showSqlHelp && (
           <div className="border-b border-black/10 bg-amber-50/70 p-4 text-xs text-amber-900 leading-5">
-            <strong>Cómo configurar usuarios administradores en Supabase Auth:</strong>
+            <strong>Instrucciones para desplegar las nuevas políticas en Supabase:</strong>
             <ol className="mt-2 list-decimal list-inside space-y-1">
-              <li>En tu proyecto de Supabase, ve a <strong>Authentication &gt; Users</strong>.</li>
-              <li>Haz clic en <strong>"Add user" &gt; "Create user"</strong>.</li>
-              <li>Escribe el correo de administración y su contraseña.</li>
-              <li>Ejecuta el archivo <code className="bg-amber-200/60 px-1 py-0.5 rounded">supabase/schema.sql</code> en el SQL Editor.</li>
+              <li>Copia y ejecuta el contenido actualizado del archivo <code className="bg-amber-200/60 px-1 py-0.5 rounded">supabase/schema.sql</code> en el SQL Editor de Supabase.</li>
+              <li>Esto habilitará las políticas para que los clientes puedan consultar su estado con el botón <strong>Rastrear Pedido</strong>.</li>
             </ol>
           </div>
         )}
 
-        {/* Bar de Estadísticas (2x2 en móvil) */}
-        <div className="grid grid-cols-2 gap-2.5 border-b border-black/10 bg-white p-3.5 sm:gap-4 sm:p-5 sm:grid-cols-4">
-          <div className="rounded-xl border border-black/10 bg-ivory p-3">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Total Pedidos</div>
-            <div className="mt-0.5 text-xl sm:text-2xl font-black">{orders.length}</div>
-          </div>
-          <div className="rounded-xl border border-black/10 bg-ivory p-3">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Ventas</div>
-            <div className="mt-0.5 text-lg sm:text-2xl font-black text-redlingote">{formatCRC(totalRevenue)}</div>
-          </div>
-          <div className="rounded-xl border border-black/10 bg-ivory p-3">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Adelanto 50%</div>
-            <div className="mt-0.5 text-xl sm:text-2xl font-black text-teal-600">
-              {orders.filter(o => ['deposit_paid', 'fully_paid'].includes(o.status)).length}
+        {/* BARRA DE ESTADÍSTICAS (Plegable en móvil para dar 90% de pantalla a la lista) */}
+        <div className={`${showStatsMobile ? 'block' : 'hidden sm:block'} border-b border-black/10 bg-white p-3 sm:p-5 transition duration-200`}>
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <div className="rounded-xl border border-black/10 bg-ivory p-2.5 sm:p-3">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Total Pedidos</div>
+              <div className="mt-0.5 text-lg sm:text-2xl font-black">{orders.length}</div>
             </div>
-          </div>
-          <div className="rounded-xl border border-black/10 bg-ivory p-3">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">En Cocina</div>
-            <div className="mt-0.5 text-xl sm:text-2xl font-black text-emerald-600">
-              {orders.filter(o => ['in_production', 'ready'].includes(o.status)).length}
+            <div className="rounded-xl border border-black/10 bg-ivory p-2.5 sm:p-3">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Ventas Acumuladas</div>
+              <div className="mt-0.5 text-base sm:text-2xl font-black text-redlingote">{formatCRC(totalRevenue)}</div>
+            </div>
+            <div className="rounded-xl border border-black/10 bg-ivory p-2.5 sm:p-3">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">Adelantos (50%)</div>
+              <div className="mt-0.5 text-lg sm:text-2xl font-black text-teal-600">
+                {orders.filter(o => ['deposit_paid', 'fully_paid'].includes(o.status)).length}
+              </div>
+            </div>
+            <div className="rounded-xl border border-black/10 bg-ivory p-2.5 sm:p-3">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-black/45">En Cocina</div>
+              <div className="mt-0.5 text-lg sm:text-2xl font-black text-emerald-600">
+                {orders.filter(o => ['in_production', 'ready'].includes(o.status)).length}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Filtros (Mobile Responsive Stack) */}
-        <div className="flex flex-col gap-2.5 border-b border-black/10 bg-ivory/50 p-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <span className="text-xs font-bold text-black/60 shrink-0">Estado:</span>
+        {/* FILTROS DE BÚSQUEDA Y ESTADO (COMPACTO) */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/10 bg-ivory/60 px-3.5 py-2.5 sm:px-6 sm:py-3">
+          <div className="flex items-center gap-2 flex-1 min-w-[160px]">
+            <span className="text-xs font-bold text-black/60 shrink-0">Filtrar:</span>
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="w-full sm:w-auto rounded-lg border border-black/15 bg-white px-3 py-2 text-xs font-semibold outline-none min-h-[40px]"
+              className="w-full rounded-lg border border-black/15 bg-white px-2.5 py-1.5 text-xs font-semibold outline-none min-h-[36px]"
             >
-              <option value="all">Todos los estados</option>
-              <option value="pending">Pendiente de Pago</option>
+              <option value="all">Todos ({orders.length})</option>
+              <option value="pending">Pendientes de Pago</option>
               <option value="deposit_paid">Adelanto 50% Recibido</option>
               <option value="fully_paid">Pago 100% Completo</option>
               <option value="in_production">En Cocina</option>
@@ -354,18 +368,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </select>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <span className="text-xs font-bold text-black/60 shrink-0">Fecha:</span>
+          <div className="flex items-center gap-2 shrink-0">
             <input
               type="date"
               value={dateFilter}
               onChange={e => setDateFilter(e.target.value)}
-              className="flex-1 sm:w-auto rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-semibold outline-none min-h-[40px]"
+              className="rounded-lg border border-black/15 bg-white px-2 py-1 text-xs font-semibold outline-none min-h-[36px]"
             />
             {dateFilter && (
               <button
                 onClick={() => setDateFilter('')}
-                className="text-xs font-bold text-redlingote shrink-0 underline"
+                className="text-xs font-bold text-redlingote underline"
               >
                 Limpiar
               </button>
@@ -373,127 +386,146 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Lista de Pedidos */}
-        <div className="flex-1 overflow-y-auto p-3.5 sm:p-6 space-y-3.5">
+        {/* LISTA PRINCIPAL DE PEDIDOS (AMPLIA Y CON SCROLL NATURAL) */}
+        <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-4">
           {loadingOrders ? (
-            <div className="py-16 text-center text-sm font-semibold text-black/45">Cargando pedidos...</div>
+            <div className="py-20 text-center text-sm font-semibold text-black/45">
+              Cargando lista de pedidos...
+            </div>
           ) : filteredOrders.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-black/15 py-16 text-center text-black/45">
-              No se encontraron pedidos con los filtros seleccionados.
+              No hay pedidos que coincidan con los filtros seleccionados.
             </div>
           ) : (
-            filteredOrders.map(order => {
-              const badge = STATUS_LABELS[order.status] || STATUS_LABELS.pending
-              return (
-                <div
-                  key={order.id}
-                  className="flex flex-col gap-3 rounded-2xl border border-black/10 bg-white p-4 shadow-sm transition hover:border-black/20"
-                >
-                  {/* Encabezado Pedido Mobile */}
-                  <div className="flex items-start justify-between gap-2 border-b border-black/10 pb-3">
-                    <div>
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="display font-bold text-base sm:text-lg leading-tight">
-                          {order.customer_name}
-                        </span>
-                        {order.has_paella && (
-                          <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-800">
-                            🥘 Paella
+            <>
+              {/* Indicador de cantidad de resultados */}
+              <div className="text-[11px] font-bold uppercase tracking-wider text-black/40 px-1">
+                Mostrando {filteredOrders.length} {filteredOrders.length === 1 ? 'pedido' : 'pedidos'}:
+              </div>
+
+              {filteredOrders.map(order => {
+                const badge = STATUS_LABELS[order.status] || STATUS_LABELS.pending
+                return (
+                  <div
+                    key={order.id}
+                    className="flex flex-col gap-3 rounded-2xl border border-black/15 bg-white p-4 shadow-sm transition hover:border-black/30"
+                  >
+                    {/* Encabezado Pedido */}
+                    <div className="flex items-start justify-between gap-2 border-b border-black/10 pb-3">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="display font-bold text-lg text-ink">
+                            {order.customer_name}
                           </span>
-                        )}
+                          {order.has_paella && (
+                            <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-[10px] font-bold text-orange-800">
+                              🥘 Paella
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="mt-1 flex items-center gap-2">
+                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${badge.bg} ${badge.text}`}>
+                            {badge.label}
+                          </span>
+                          <span className="text-[11px] font-mono text-black/40">
+                            #{order.id.slice(0, 8)}
+                          </span>
+                        </div>
                       </div>
-                      <div className="mt-1 flex items-center gap-2">
-                        <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${badge.bg} ${badge.text}`}>
-                          {badge.label}
-                        </span>
-                        <span className="text-[10px] font-mono text-black/40">
-                          #{order.id.slice(0, 8)}
-                        </span>
+
+                      <div className="text-right shrink-0">
+                        <div className="text-[11px] text-black/45">Total a cobrar</div>
+                        <div className="text-lg font-black text-redlingote">
+                          {formatCRC(Number(order.total))}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="text-right shrink-0">
-                      <div className="text-[11px] text-black/45">Total</div>
-                      <div className="text-base sm:text-lg font-black text-redlingote">
-                        {formatCRC(Number(order.total))}
+                    {/* Ficha de Detalles de Recogida y Teléfono */}
+                    <div className="rounded-xl bg-ivory p-3 text-xs space-y-1.5 border border-black/5">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <a
+                          href={`tel:${order.customer_phone}`}
+                          className="inline-flex items-center gap-1 text-blue-700 font-bold hover:underline"
+                        >
+                          <span>📞 {order.customer_phone}</span>
+                          <span className="text-[10px] font-normal text-black/50">(Tocar para llamar)</span>
+                        </a>
+
+                        <div className="font-bold text-black/70">
+                          👥 {order.people_count} personas
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-black/10 text-black/80 font-medium">
+                        <div>📅 Recogida: <strong>{order.pickup_date}</strong></div>
+                        <div>⏰ Hora: <strong className="text-redlingote font-bold text-sm">{order.pickup_time}</strong></div>
+                      </div>
+                    </div>
+
+                    {/* Desglose de ítems */}
+                    {order.items && order.items.length > 0 && (
+                      <div className="px-1 text-xs leading-5">
+                        <strong className="text-black/60 uppercase tracking-wider text-[10px]">Contenido del pedido:</strong>
+                        <ul className="mt-1 list-disc list-inside space-y-0.5 font-semibold text-black/90">
+                          {order.items.map((item, idx) => (
+                            <li key={idx}>
+                              {item.quantity} × {item.product_name} ({formatCRC(Number(item.total_price))})
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* BARRA DE ACCIONES PRINCIPALES (GRANDE Y TÁCTIL) */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 border-t border-black/10 pt-3">
+                      <div className="text-xs text-amber-900 font-bold bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200/70 text-center sm:text-left">
+                        👉 Adelanto 50%: <strong>{formatCRC(Number(order.total) * 0.5)}</strong>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setSelectedTicketOrder(order)}
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 rounded-xl border border-black/20 bg-ivory px-3.5 py-2.5 text-xs font-bold text-ink hover:bg-black hover:text-white transition min-h-[44px]"
+                          title="Imprimir comanda"
+                        >
+                          <span>🖨️</span>
+                          <span>Comanda</span>
+                        </button>
+
+                        <select
+                          value={order.status}
+                          onChange={e => handleStatusChange(order.id, e.target.value as OrderStatus)}
+                          className="flex-1 sm:flex-none rounded-xl border border-black/20 bg-white px-3 py-2.5 text-xs font-bold outline-none focus:border-redlingote min-h-[44px]"
+                        >
+                          <option value="pending">Pendiente de Pago</option>
+                          <option value="deposit_paid">Adelanto 50% Recibido</option>
+                          <option value="fully_paid">Pago 100% Completo</option>
+                          <option value="in_production">En Cocina</option>
+                          <option value="ready">Listo para Recoger</option>
+                          <option value="delivered">Entregado</option>
+                          <option value="cancelled">Cancelado</option>
+                        </select>
+
+                        <button
+                          onClick={() => setConfirmDeleteOrder(order)}
+                          className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2.5 text-xs font-bold text-rose-700 hover:bg-rose-100 transition min-h-[44px] shrink-0"
+                          title="Opciones de cancelación / eliminación"
+                        >
+                          🗑️
+                        </button>
                       </div>
                     </div>
                   </div>
-
-                  {/* Datos de contacto y fecha (Con clic directo para llamar) */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-black/70">
-                    <a
-                      href={`tel:${order.customer_phone}`}
-                      className="inline-flex items-center gap-1.5 text-blue-700 font-bold hover:underline"
-                    >
-                      <span>📞 {order.customer_phone}</span>
-                      <span className="text-[10px] font-normal text-black/40">(Llamar)</span>
-                    </a>
-                    <div>👥 <strong>{order.people_count} personas</strong></div>
-                    <div>📅 <strong>{order.pickup_date}</strong> a las <strong>{order.pickup_time}</strong></div>
-                  </div>
-
-                  {/* Ítems del pedido */}
-                  {order.items && order.items.length > 0 && (
-                    <div className="rounded-xl bg-ivory p-3 text-xs leading-5">
-                      <strong className="text-black/70">Ítems reservados:</strong>
-                      <ul className="mt-1 list-disc list-inside space-y-0.5 text-black/80">
-                        {order.items.map((item, idx) => (
-                          <li key={idx}>
-                            {item.quantity} × {item.product_name} ({formatCRC(Number(item.total_price))})
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Barra de Acciones Móvil (Touch-Friendly) */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-t border-black/10 pt-3">
-                    <div className="text-[11px] text-amber-900 font-bold">
-                      Adelanto (50%): {formatCRC(Number(order.total) * 0.5)}
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-                      <button
-                        onClick={() => setSelectedTicketOrder(order)}
-                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 rounded-xl border border-black/20 bg-ivory px-3 py-2 text-xs font-bold text-ink hover:bg-black hover:text-white transition min-h-[40px]"
-                        title="Imprimir comanda"
-                      >
-                        <span>🖨️</span>
-                        <span>Comanda</span>
-                      </button>
-
-                      <select
-                        value={order.status}
-                        onChange={e => handleStatusChange(order.id, e.target.value as OrderStatus)}
-                        className="flex-1 sm:flex-none rounded-xl border border-black/20 bg-white px-2.5 py-2 text-xs font-bold outline-none focus:border-redlingote min-h-[40px]"
-                      >
-                        <option value="pending">Pendiente de Pago</option>
-                        <option value="deposit_paid">Adelanto 50% Recibido</option>
-                        <option value="fully_paid">Pago 100% Completo</option>
-                        <option value="in_production">En Cocina</option>
-                        <option value="ready">Listo para Recoger</option>
-                        <option value="delivered">Entregado</option>
-                        <option value="cancelled">Cancelado</option>
-                      </select>
-
-                      <button
-                        onClick={() => setConfirmDeleteOrder(order)}
-                        className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100 transition min-h-[40px] shrink-0"
-                        title="Opciones de cancelación / eliminación"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )
-            })
+                )
+              })}
+            </>
           )}
         </div>
 
         {/* Footer Admin */}
-        <div className="border-t border-black/10 bg-ivory px-4 py-3 text-center text-xs text-black/50">
+        <div className="border-t border-black/10 bg-ivory px-4 py-2.5 text-center text-[11px] text-black/50 shrink-0">
           El Lingote Español · Panel Protegido con Supabase Auth
         </div>
       </div>
@@ -506,7 +538,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
         />
       )}
 
-      {/* MODAL DE CONFIRMACIÓN DE CANCELACIÓN / ELIMINACIÓN MOBILE FIRST */}
+      {/* MODAL DE CONFIRMACIÓN DE CANCELACIÓN / ELIMINACIÓN */}
       {confirmDeleteOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3.5 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-[2rem] bg-paper p-6 text-ink shadow-2xl animate-in fade-in zoom-in duration-200">
