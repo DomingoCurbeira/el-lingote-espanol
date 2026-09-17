@@ -317,12 +317,34 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
         {/* Guía SQL si se despliega */}
         {showSqlHelp && (
-          <div className="border-b border-black/10 bg-amber-50/70 p-3 sm:p-4 text-xs text-amber-900 leading-5">
-            <strong>Instrucciones para desplegar las nuevas políticas en Supabase:</strong>
-            <ol className="mt-1 list-decimal list-inside space-y-1 text-[11px]">
-              <li>Copia y ejecuta el contenido actualizado del archivo <code className="bg-amber-200/60 px-1 py-0.5 rounded">supabase/schema.sql</code> en el SQL Editor de Supabase.</li>
-              <li>Esto habilitará las políticas para que los clientes puedan consultar su estado con el botón <strong>Rastrear Pedido</strong>.</li>
-            </ol>
+          <div className="border-b border-black/10 bg-amber-50/90 p-4 text-xs text-amber-950 leading-5 space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <strong className="text-sm font-bold">⚡ Código SQL para Habilitar Borrado en Supabase:</strong>
+              <button
+                onClick={() => {
+                  const sql = `drop policy if exists "Solo administradores autenticados pueden actualizar pedidos" on public.orders;\ndrop policy if exists "Solo administradores autenticados pueden eliminar pedidos" on public.orders;\ndrop policy if exists "Permitir actualizar pedidos" on public.orders;\ndrop policy if exists "Permitir eliminar pedidos" on public.orders;\ndrop policy if exists "Permitir eliminar order_items" on public.order_items;\n\ncreate policy "Permitir actualizar pedidos" on public.orders for update using (true);\ncreate policy "Permitir eliminar pedidos" on public.orders for delete using (true);\ncreate policy "Permitir eliminar order_items" on public.order_items for delete using (true);`
+                  navigator.clipboard.writeText(sql)
+                  alert('¡Código SQL copiado al portapapeles! Págalo en el SQL Editor de Supabase.')
+                }}
+                className="rounded-lg bg-amber-200 px-3 py-1 font-bold text-amber-900 border border-amber-300 hover:bg-amber-300 transition text-xs shrink-0"
+              >
+                📋 Copiar Código SQL
+              </button>
+            </div>
+            <p className="text-[11px] text-amber-900/80">
+              Pega este código en el <strong>SQL Editor</strong> de tu proyecto Supabase en <a href="https://supabase.com" target="_blank" rel="noreferrer" className="underline font-bold">supabase.com</a> y presiona <strong>Run</strong>:
+            </p>
+            <pre className="rounded-xl bg-amber-950/90 p-3 font-mono text-[10px] text-amber-100 overflow-x-auto select-all">
+{`drop policy if exists "Solo administradores autenticados pueden actualizar pedidos" on public.orders;
+drop policy if exists "Solo administradores autenticados pueden eliminar pedidos" on public.orders;
+drop policy if exists "Permitir actualizar pedidos" on public.orders;
+drop policy if exists "Permitir eliminar pedidos" on public.orders;
+drop policy if exists "Permitir eliminar order_items" on public.order_items;
+
+create policy "Permitir actualizar pedidos" on public.orders for update using (true);
+create policy "Permitir eliminar pedidos" on public.orders for delete using (true);
+create policy "Permitir eliminar order_items" on public.order_items for delete using (true);`}
+            </pre>
           </div>
         )}
 
