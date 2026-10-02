@@ -2,9 +2,10 @@ import React from 'react'
 
 type BanqueteSectionProps = {
   onSelectBanquete: () => void
+  isSelected?: boolean
 }
 
-export const BanqueteSection: React.FC<BanqueteSectionProps> = ({ onSelectBanquete }) => {
+export const BanqueteSection: React.FC<BanqueteSectionProps> = ({ onSelectBanquete, isSelected = false }) => {
   return (
     <section id="banquete" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
       <div className="overflow-hidden rounded-[2rem] bg-saffron shadow-soft">
@@ -41,12 +42,27 @@ export const BanqueteSection: React.FC<BanqueteSectionProps> = ({ onSelectBanque
               </div>
             </div>
 
-            <button
-              onClick={onSelectBanquete}
-              className="mt-8 rounded-full bg-ink px-7 py-3.5 font-bold text-white transition hover:-translate-y-0.5"
-            >
-              Quiero el Banquete →
-            </button>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <button
+                onClick={onSelectBanquete}
+                className={`rounded-full px-7 py-3.5 font-bold transition hover:-translate-y-0.5 cursor-pointer shadow-lg ${
+                  isSelected 
+                    ? 'bg-redlingote text-white ring-2 ring-white/50' 
+                    : 'bg-ink text-white hover:bg-black'
+                }`}
+              >
+                {isSelected ? '✓ Banquete en tu pedido (Añadir otro)' : 'Quiero el Banquete →'}
+              </button>
+
+              {isSelected && (
+                <a
+                  href="#reservar"
+                  className="rounded-full bg-white/70 px-5 py-3 text-sm font-bold text-ink hover:bg-white transition"
+                >
+                  Ir a Reservar →
+                </a>
+              )}
+            </div>
           </div>
 
           <div className="relative min-h-[360px] overflow-hidden bg-ink">

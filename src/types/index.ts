@@ -11,6 +11,8 @@ export type Product = {
   image?: string
   imageAlt?: string
   priceDetail?: string
+  badge?: string
+  tags?: string[]
 }
 
 export type CartItem = Product & {

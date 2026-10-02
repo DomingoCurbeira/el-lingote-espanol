@@ -23,7 +23,9 @@ export const products: Product[] = [
     category: 'paella',
     people: '4 personas',
     image: '/assets/banquete-familiar.png',
-    imageAlt: 'Banquete Familiar Español de El Lingote Español'
+    imageAlt: 'Banquete Familiar Español de El Lingote Español',
+    badge: '👑 Más Vendido',
+    tags: ['Ahorro Especial', 'Experiencia Completa', '4 Personas'],
   },
   {
     id: 'pollo',
@@ -34,7 +36,9 @@ export const products: Product[] = [
     category: 'paella',
     people: '4 personas',
     image: '/assets/paella-pollo.png',
-    imageAlt: 'Paella tradicional de pollo deshuesado de El Lingote Español'
+    imageAlt: 'Paella tradicional de pollo deshuesado de El Lingote Español',
+    badge: '🍗 Tradicional',
+    tags: ['Pollo Deshuesado', 'Sofrito Artesanal', 'Socarrat'],
   },
   {
     id: 'mixta',
@@ -45,7 +49,9 @@ export const products: Product[] = [
     category: 'paella',
     people: '4 personas',
     image: '/assets/paella-mixta.png',
-    imageAlt: 'Paella mixta tradicional de El Lingote Español'
+    imageAlt: 'Paella mixta tradicional de El Lingote Español',
+    badge: '⭐ Especialidad de la Casa',
+    tags: ['Mar y Montaña', 'Fondo Concentrado', 'Socarrat'],
   },
   {
     id: 'camarones',
@@ -56,7 +62,9 @@ export const products: Product[] = [
     category: 'paella',
     people: '4 personas',
     image: '/assets/paella-camarones.png',
-    imageAlt: 'Paella de camarones de El Lingote Español'
+    imageAlt: 'Paella de camarones de El Lingote Español',
+    badge: '🦐 Mariscos Frescos',
+    tags: ['Camarones Grandes', 'Fumet de Marisco', 'Toque Alioli'],
   },
   {
     id: 'senyoret',
@@ -67,7 +75,9 @@ export const products: Product[] = [
     category: 'paella',
     people: '4 personas',
     image: '/assets/arroz-senyoret.png',
-    imageAlt: 'Arroz del Senyoret de El Lingote Español'
+    imageAlt: 'Arroz del Senyoret de El Lingote Español',
+    badge: '🌊 Sin Ensuciarse',
+    tags: ['Todo Limpio', 'Corvina al Vapor', 'Fumet Concentrado'],
   },
   {
     id: 'tortilla',
@@ -78,7 +88,9 @@ export const products: Product[] = [
     category: 'tortilla',
     people: '4 personas',
     image: '/assets/tortilla.png',
-    imageAlt: 'Tortilla española clásica de El Lingote Español'
+    imageAlt: 'Tortilla española clásica de El Lingote Español',
+    badge: '🏆 Pieza Entera Familiar',
+    tags: ['Punto Meloso', 'Cebolla Pochada', 'Aceite de Oliva'],
   },
   {
     id: 'tarta',
@@ -90,7 +102,9 @@ export const products: Product[] = [
     category: 'postre',
     people: '1 porción',
     image: '/assets/tarta.webp',
-    imageAlt: 'Porción individual de tarta cremosa de queso con plátano maduro'
+    imageAlt: 'Porción individual de tarta cremosa de queso con plátano maduro',
+    badge: '🍌 Postre Insignia',
+    tags: ['Queso Cremoso', 'Plátano Maduro', 'Horneado Diario'],
   },
   {
     id: 'ensalada',
@@ -101,7 +115,8 @@ export const products: Product[] = [
     category: 'extra',
     people: '4 personas',
     image: '/assets/ensalada_mixta.png',
-    imageAlt: 'Ensalada mixta familiar de El Lingote Español'
+    imageAlt: 'Ensalada mixta familiar de El Lingote Español',
+    tags: ['Fresca', 'Vinagreta Casera', 'Ideal para Paella'],
   },
   {
     id: 'alioli',
@@ -112,7 +127,8 @@ export const products: Product[] = [
     category: 'extra',
     people: '4 personas',
     image: '/assets/ali-oli.png',
-    imageAlt: 'Salsa alioli artesanal de El Lingote Español'
+    imageAlt: 'Salsa alioli artesanal de El Lingote Español',
+    tags: ['Ajo Fresco', 'Emulsión al Momento', 'Receta Tradicional'],
   },
 ]
 

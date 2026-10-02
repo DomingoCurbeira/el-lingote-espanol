@@ -29,6 +29,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 }) => {
   const [isSaving, setIsSaving] = useState(false)
   const [saveStatus, setSaveStatus] = useState<string | null>(null)
+  const [copiedSinpe, setCopiedSinpe] = useState(false)
 
   const advancePayment = total * 0.5
   const remainingBalance = total * 0.5
@@ -158,8 +159,26 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             <span>Saldo a cancelar al recoger:</span>
             <strong className="font-semibold">{formatCRC(remainingBalance)}</strong>
           </div>
-          <div className="mt-2 text-xs font-semibold text-amber-900 border-t border-amber-200/80 pt-2">
-            📲 Transferencia SINPE Móvil al: <strong className="text-black font-mono">{SINPE_NUMBER}</strong>
+          <div className="mt-3 flex items-center justify-between border-t border-amber-200/80 pt-2 text-xs">
+            <div>
+              📲 Transferencia SINPE al: <strong className="text-black font-mono text-sm">{SINPE_NUMBER}</strong>
+            </div>
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(SINPE_NUMBER.replace(/\D/g, ''))
+                  setCopiedSinpe(true)
+                  setTimeout(() => setCopiedSinpe(false), 2500)
+                } catch {
+                  setCopiedSinpe(true)
+                  setTimeout(() => setCopiedSinpe(false), 2500)
+                }
+              }}
+              className="rounded-lg bg-amber-200 border border-amber-400 px-2.5 py-1 text-[11px] font-black text-amber-950 hover:bg-amber-300 transition"
+            >
+              {copiedSinpe ? '✓ ¡Copiado!' : 'Copiar'}
+            </button>
           </div>
         </div>
 
